@@ -8,19 +8,18 @@ Original file is located at
 """
 
 
-
 # Commented out IPython magic to ensure Python compatibility.
 # %pip install --upgrade tiktoken
 
 
-import os 
+    
+import os  
 import requests
 from flask import Flask,request,jsonify
 from flask_cors import CORS,cross_origin
 app = Flask(__name__)
 env_config = os.getenv("PROD_APP_SETTINGS", "config.DevelopmentConfig")
 app.config.from_object(env_config)
-
 CORS(app)
 
 @app.route('/',methods = ['GET'])
@@ -56,11 +55,11 @@ def hello_world():
         return num_tokens
 
     prompt1 = str(request.args['Query2'])
-    System_tokens = num_tokens_from_string(prompt1, "cl100k_base")
+    System_tokens = num_tokens_from_string(prompt1, "p50k_base")
     prompt2 = str(request.args['Query'])
-    User_tokens = num_tokens_from_string(prompt2, "cl100k_base")
+    User_tokens = num_tokens_from_string(prompt2, "p50k_base")
     prompt3 = str(request.args['Query1'])
-    Assistant_tokens = num_tokens_from_string(prompt3, "cl100k_base")
+    Assistant_tokens = num_tokens_from_string(prompt3, "p50k_base")
     total_tokens = System_tokens + User_tokens + Assistant_tokens
     cost_per_1000_tokens = 0.002 / 1000 
     cost = cost_per_1000_tokens * total_tokens
@@ -95,4 +94,5 @@ def hello_world():
 if __name__ == '__main__':
     app.debug = True
     app.run()
+
 
